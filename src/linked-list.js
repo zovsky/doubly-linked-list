@@ -1,27 +1,113 @@
 const Node = require('./node');
 
 class LinkedList {
-    constructor() {}
+    constructor() {
+        this.length = 0;
+        this._head = null;
+        this._tail = null;
+    }
 
-    append(data) {}
+    append(data) {
+        if (this.length) {
+            var temp = new Node(data);
+            temp.prev = this._tail;
+            this._tail.next = temp;
+            this._tail = temp;
+        } else {
+            this._tail = new Node(data);
+            this._head = this._tail;
+        }
+        this.length++;
+    }
 
-    head() {}
+    head() {
+        return this._head.data;
+    }
 
-    tail() {}
+    tail() {
+        return this._tail.data;
+    }
 
-    at(index) {}
+    at(index) {
+        var i=0;
+        var current = this._head;
+        while (i<index) {
+            current = current.next;
+            i++;
+        }
+        return current.data;
+    }
 
-    insertAt(index, data) {}
+    insertAt(index, data) {
+        var newNode = new Node(data);
+        var i=0;
+        var current = this._head;
+        while (i<index-1) {
+            current = current.next;
+            i++;
+        }
 
-    isEmpty() {}
+        var temp1 = current;
+        var temp2 = current.next;
+        current = newNode;
+        temp1.next = current;
+        temp2.prev = current;
+        current.prev = temp1;
+        current.next = temp2;
+    }
 
-    clear() {}
+    isEmpty() {
+        return(!this.length);
+    }
 
-    deleteAt(index) {}
+    clear() {
+        this._head.data = null;
+        this._tail.data = null;
+        this.length = 0;
+        //return this;
+    }
 
-    reverse() {}
+    deleteAt(index) {
+        var i=0;
+        var current = this._head;
+        while (i<index) {
+            current = current.next;
+            i++;
+        }
 
-    indexOf(data) {}
+        var temp1 = current.prev;
+        var temp2 = current.next;
+        temp1.next = current.next;
+        temp2.prev = current.prev;
+    }
+
+    reverse() {
+        var array = [];
+        var i=0;
+        var current = this._head;
+        while (i<this.length) {
+            array[i] = current.data;
+            current = current.next;
+            i++;
+        }
+        this._head = this._tail;
+        for (var n=array.length; n > 0; n--) {
+            this.append(array[n]);
+        }
+    }
+
+    indexOf(data) {
+        var i=0;
+        var current = this._head;
+        while (i<this.length) {
+            if (current.data == data) {
+                return i;
+            }
+            current = current.next;
+            i++;
+        }
+        return -1;
+    }
 }
 
 module.exports = LinkedList;
