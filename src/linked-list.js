@@ -18,6 +18,7 @@ class LinkedList {
             this._head = this._tail;
         }
         this.length++;
+        return this;
     }
 
     head() {
@@ -54,6 +55,7 @@ class LinkedList {
         temp2.prev = current;
         current.prev = temp1;
         current.next = temp2;
+        return this;
     }
 
     isEmpty() {
@@ -64,48 +66,52 @@ class LinkedList {
         this._head.data = null;
         this._tail.data = null;
         this.length = 0;
-        //return this;
+        return this;
     }
 
     deleteAt(index) {
         var i=0;
         var current = this._head;
-        while (i<index) {
-            current = current.next;
-            i++;
-        }
+        if (index == 0) {
+            this._head = current.next;
+        } else {
+            while (i<index) {
+                current = current.next;
+                i++;
+            }
 
-        var temp1 = current.prev;
-        var temp2 = current.next;
-        temp1.next = current.next;
-        temp2.prev = current.prev;
+            var temp1 = current.prev;
+            var temp2 = current.next;
+            temp1.next = current.next;
+            temp2.prev = current.prev;
+        }
+        return this;
     }
 
     reverse() {
-        var array = [];
-        var i=0;
         var current = this._head;
-        while (i<this.length) {
-            array[i] = current.data;
-            current = current.next;
-            i++;
+        while (current != null) {
+            var temp = current.next;
+            current.next = current.prev;
+            current.prev = temp;              
+            current = temp;
         }
+        temp = this._head;
         this._head = this._tail;
-        for (var n=array.length; n > 0; n--) {
-            this.append(array[n]);
-        }
+        this._tail = temp;
+        return this;
     }
 
     indexOf(data) {
         var i=0;
         var current = this._head;
-        while (i<this.length) {
-            if (current.data == data) {
-                return i;
+            while (i<this.length) {
+                if (current.data == data) {
+                    return i;
+                }
+                current = current.next;
+                i++;
             }
-            current = current.next;
-            i++;
-        }
         return -1;
     }
 }
